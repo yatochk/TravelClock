@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="DeepBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/deep_light</item>
+        <item name="colorPrimaryDark">@color/deep_middle</item>
+        <item name="colorAccent">@color/deep_dark</item>
+    </style>
+
+    <style name="SweetBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/sweet_light</item>
+        <item name="colorPrimaryDark">@color/sweet_middle</item>
+        <item name="colorAccent">@color/sweet_dark</item>
+    </style>
+
+    <style name="Violet" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/violet_light</item>
+        <item name="colorPrimaryDark">@color/violet_middle</item>
+        <item name="colorAccent">@color/violet_dark</item>
+    </style>
+
+    <style name="GreenBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/gb_light</item>
+        <item name="colorPrimaryDark">@color/gb_middle</item>
+        <item name="colorAccent">@color/gb_dark</item>
+    </style>
+
+</resources>

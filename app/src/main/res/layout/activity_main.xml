@@ -30,6 +30,21 @@
         app:layout_constraintTop_toTopOf="@+id/map" />
 
     <android.support.v7.widget.CardView
+        android:id="@+id/findCard"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:alpha="0"
+        app:cardCornerRadius="@dimen/default_gap"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintStart_toStartOf="@+id/map">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:id="@+id/arrivalCard"
         android:layout_width="280dp"
         android:layout_height="50dp"
@@ -51,6 +66,7 @@
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp"
             android:typeface="sans" />
+
     </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean isTracked = true;
 
     private CardView[] cardViews = new CardView[3];
+    private boolean isUped;
 
 
     @Override
@@ -61,16 +62,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         iconArrivalMarker = BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.placeholder));
 
         cardViews[Constants.ARRIVAL_CARD] = findViewById(R.id.arrivalCard);
+        cardViews[Constants.SETTING_CARD] = findViewById(R.id.findCard);
         cardViews[Constants.ARRIVAL_CARD].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CardController.exitCardInLeft(cardViews[Constants.ARRIVAL_CARD]);
+                if (isUped){
+                    CardController.downCardView(cardViews[Constants.ARRIVAL_CARD], cardViews[Constants.SETTING_CARD]);
+                }
+                else {
+                    CardController.upCardView(cardViews[Constants.ARRIVAL_CARD], cardViews[Constants.SETTING_CARD]);
+                }
+
+                isUped = !isUped;
             }
         });
     }
 
 
-    //Return bitmap by id drawableRes
+    //return bitmap by id drawableRes
     private Bitmap getBitmap(int drawableRes) {
         Drawable drawable = getResources().getDrawable(drawableRes);
         Canvas canvas = new Canvas();
@@ -89,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map = googleMap;
         map.setMaxZoomPreference(19);
 
+        //user location marker
         locationMarker = map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .anchor(0.5f, 0.5f)
@@ -97,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .flat(true)
                 .icon(iconLocation));
 
+        //target marker
         arrivalMarker = map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .icon(null)
@@ -183,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    //calculation of the distance between the user and the marker
     private double calculateDistance(LatLng location, LatLng markerLocation) {
 
         final float EARTH_RAD = 112200;

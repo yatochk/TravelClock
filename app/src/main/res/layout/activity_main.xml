@@ -14,8 +14,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/distanceView"
@@ -27,102 +29,28 @@
         app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomMenu"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="?attr/colorPrimary"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/fragmentMap"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="240dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/location"
-            android:onClick="setMapFragment"
-            app:layout_constraintBottom_toBottomOf="@+id/map"
-            app:layout_constraintEnd_toEndOf="@+id/map" />
-
-        <Button
-            android:id="@+id/fragmentMenu"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/menu"
-            android:onClick="setMenuFragment" />
-
-        <Button
-            android:id="@+id/colorChange"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="85dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/color"
-            android:onClick="openThemeChanger" />
-    </android.support.design.widget.BottomNavigationView>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/themeChanger"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/arrivalCard"
+        android:layout_width="280dp"
         android:layout_height="50dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:cardCornerRadius="@dimen/default_gap"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintStart_toStartOf="@+id/map">
 
-        <Button
-            android:id="@+id/deep"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/deep_dark"
-            android:onClick="setMyTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/greenBlue"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/gb_dark"
-            android:onClick="setMyTheme"
-            app:layout_constraintEnd_toStartOf="@+id/sweet"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/sweet"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/sweet_dark"
-            android:onClick="setMyTheme"
-            app:layout_constraintEnd_toStartOf="@+id/violet"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/violet"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/violet_dark"
-            android:onClick="setMyTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.v7.widget.Toolbar>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="12dp"
+            android:text="@string/first_card"
+            android:textAlignment="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="18sp"
+            android:typeface="sans" />
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

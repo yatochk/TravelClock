@@ -6,8 +6,8 @@
     <string name="track">Track</string>
     <string name="setting">Setting</string>
     <string name="distance">Distance to alarm</string>
+    <string name="first_card">Выберите пункт назначения</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

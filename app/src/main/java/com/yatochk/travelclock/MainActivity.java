@@ -1,6 +1,7 @@
 package com.yatochk.travelclock;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,7 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -24,9 +27,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.yatochk.travelclock.adapter.TabsPagerFragmentAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final int LAYOUT = R.layout.activity_main;
+    private ViewPager viewPager;
 
     private GoogleMap map;
     private Marker locationMarker;
@@ -36,21 +43,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private BitmapDescriptor iconLocation;
     private BitmapDescriptor iconArrivalMarker;
 
-    private LatLng lastLocation;
+    private LatLng lastLocation = new LatLng(0, 0);
     private double distance;
     public double alarmDistance = 200;
 
-    public boolean isTracked = true;
-
-    private CardView[] cardViews = new CardView[3];
-    private boolean isUped;
-
+    public static boolean isTracked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(LAYOUT);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -61,25 +64,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         iconLocation = BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.arrow));
         iconArrivalMarker = BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.placeholder));
 
-        cardViews[Constants.ARRIVAL_CARD] = findViewById(R.id.arrivalCard);
-        cardViews[Constants.SETTING_CARD] = findViewById(R.id.findCard);
-        cardViews[Constants.ARRIVAL_CARD].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isUped){
-                    CardController.downCardView(cardViews[Constants.ARRIVAL_CARD], cardViews[Constants.SETTING_CARD]);
-                }
-                else {
-                    CardController.upCardView(cardViews[Constants.ARRIVAL_CARD], cardViews[Constants.SETTING_CARD]);
-                }
-
-                isUped = !isUped;
-            }
-        });
+        initTabs();
     }
 
+    private void initTabs(){
+        viewPager = findViewById(R.id.viewPager);
+        TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
 
-    //return bitmap by id drawableRes
+        TabLayout tabLayout = findViewById(R.id.bottomTab);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+    }
+
     private Bitmap getBitmap(int drawableRes) {
         Drawable drawable = getResources().getDrawable(drawableRes);
         Canvas canvas = new Canvas();
@@ -91,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return bitmap;
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -107,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .flat(true)
                 .icon(iconLocation));
 
-        //target marker
         arrivalMarker = map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .icon(null)
@@ -117,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.setOnMapLongClickListener(longClickListener);
         map.setOnMarkerClickListener(markerClickListener);
     }
-
 
     private GoogleMap.OnMapLongClickListener longClickListener = new GoogleMap.OnMapLongClickListener() {
         @Override
@@ -129,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
         }
     };
-
 
     private GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
         @Override
@@ -143,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onLocationChanged(Location location) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+            markerRotation(locationMarker, lastLocation, latLng);
             lastLocation = latLng;
             locationMarker.setPosition(latLng);
 
@@ -170,6 +166,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     };
 
+    private void markerRotation(Marker locationMarker, LatLng lastLocation, LatLng newLocation) {
+        int dLat = (int) Math.round(newLocation.latitude - lastLocation.latitude);
+        int dLon = (int) Math.round(newLocation.longitude - lastLocation.longitude);
+        float azimuth = (float) Math.atan2(dLat, dLon);
+
+        locationMarker.setRotation(azimuth);
+    }
 
     @Override
     protected void onResume() {
@@ -193,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onPause();
     }
 
-
     //calculation of the distance between the user and the marker
     private double calculateDistance(LatLng location, LatLng markerLocation) {
 
@@ -211,5 +213,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toast toast = Toast.makeText(this, "ALARMING!!!", Toast.LENGTH_LONG);
         toast.show();
     }
-
 }

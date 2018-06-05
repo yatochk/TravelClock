@@ -2,7 +2,7 @@
 <resources>
     <!--Default-->
     <color name="colorPrimary">#3f51b5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#ff4081</color>
 
     <color name="accent_material_light">#0e2f47</color>
@@ -29,9 +29,9 @@
     <color name="gb_middle">#41848f</color>
     <color name="gb_dark">#0a1c28</color>
 
-    <color name="primaryColor">#00838f</color>
+    <color name="primaryColor">#009688</color>
     <color name="primaryLightColor">#4fb3bf</color>
-    <color name="primaryDarkColor">#005662</color>
+    <color name="primaryDarkColor">#00695c</color>
     <color name="secondaryColor">#03a9f4</color>
     <color name="secondaryLightColor">#67daff</color>
     <color name="secondaryDarkColor">#007ac1</color>

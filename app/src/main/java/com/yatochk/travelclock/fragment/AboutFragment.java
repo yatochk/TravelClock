@@ -8,23 +8,21 @@ import android.view.ViewGroup;
 
 import com.yatochk.travelclock.R;
 
-public class Location extends Fragment{
-    private static final int LAYOUT = R.layout.location;
 
-    private View view;
+public class AboutFragment extends Fragment {
 
-    public static Location getInstance() {
+    public static AboutFragment getInstance() {
         Bundle args = new Bundle();
-        Location fragmentLocation = new Location();
-        fragmentLocation.setArguments(args);
+        AboutFragment aboutFragment = new AboutFragment();
+        aboutFragment.setArguments(args);
 
-        return fragmentLocation;
+        return aboutFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(LAYOUT, container, false);
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
+
 }

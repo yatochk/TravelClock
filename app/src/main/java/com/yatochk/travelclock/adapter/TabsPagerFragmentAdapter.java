@@ -4,10 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.yatochk.travelclock.CompleteFragment;
-import com.yatochk.travelclock.SearchFragment;
-import com.yatochk.travelclock.SettingFragment;
-import com.yatochk.travelclock.fragment.Location;
+import com.yatochk.travelclock.fragment.AboutFragment;
+import com.yatochk.travelclock.fragment.MapFragment;
+import com.yatochk.travelclock.fragment.SettingFragment;
 
 public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
 
@@ -17,10 +16,9 @@ public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
         super(fm);
 
         tabs = new String[] {
-                "Location",
-                "Search",
-                "Setting",
-                "Complete"
+                "Settings",
+                "Map",
+                "About"
         };
     }
 
@@ -28,16 +26,13 @@ public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return Location.getInstance();
-
-            case 1:
-                return SearchFragment.getInstance();
-
-            case 2:
                 return SettingFragment.getInstance();
 
-            case 3:
-                return CompleteFragment.getInstance();
+            case 1:
+                return MapFragment.getInstance();
+
+            case 2:
+                return AboutFragment.getInstance();
         }
         return null;
     }

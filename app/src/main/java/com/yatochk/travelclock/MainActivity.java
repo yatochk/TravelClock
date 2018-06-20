@@ -1,39 +1,28 @@
 package com.yatochk.travelclock;
 
-import android.Manifest;
-import android.animation.ObjectAnimator;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
+import android.app.Activity;
 import android.location.LocationManager;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.yatochk.travelclock.adapter.TabsPagerFragmentAdapter;
-
+import com.yatochk.travelclock.fragment.MapFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_main;
+
+    public static boolean appIsPaused;
+    public static boolean needBackToConfirm;
+
     public static LocationManager locationManager;
+    public static Button findLocationButton;
+    public static Button backButton;
+
+    public static Activity thisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
 
+        thisActivity = this;
+        findLocationButton = findViewById(R.id.findLocationButton);
+        backButton = findViewById(R.id.backButton);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         initTabs();
-
-
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
     }
 
     private void initTabs(){
@@ -61,13 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
 
+        appIsPaused = false;
+        if (needBackToConfirm){
+            MapFragment.getInstance().backToConfirm();
+            needBackToConfirm = false;
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        appIsPaused = true;
     }
 }

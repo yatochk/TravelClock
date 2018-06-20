@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutLayout"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="108dp"
+        android:elevation="6dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary">
@@ -45,6 +46,24 @@
             app:tabTextColor="@color/primaryTextColor">
 
         </android.support.design.widget.TabLayout>
+
+        <Button
+            android:id="@+id/findLocationButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignEnd="@id/backButton"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/crosshairs" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/arrow_left" />
 
     </RelativeLayout>
 

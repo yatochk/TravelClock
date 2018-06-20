@@ -12,5 +12,16 @@
     <string name="map_distance">Distance:</string>
     <string name="map_time">Time:</string>
     <string name="title_on_map">Left in the way</string>
+    <string name="change_distance_to_alarm">Distance to the alarm:</string>
+    <string name="valuesSeekDistance">500 m</string>
+    <string name="trackingSwitch">Tracking mode</string>
+    <string name="developer">Develop by yatochk</string>
+    <string name="mapSettings">Map</string>
+    <string name="alarmSettings">Alarm</string>
+    <string name="vibrationSwitch">Vibration mode</string>
+    <string name="values_alarm">Alarm volume:</string>
+    <string name="values_alarm_seek">50%</string>
+    <string name="confirmButton">GO</string>
+    <string name="confirmText">Select a location and press go</string>
 
 </resources>

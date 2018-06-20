@@ -37,5 +37,8 @@
     <color name="secondaryDarkColor">#007ac1</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
+    <color name="background_material_light">#e0f2f1</color>
+
+    <color name="backgroundColor">#e0e5e1</color>
 
 </resources>

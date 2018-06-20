@@ -3,6 +3,7 @@ package com.yatochk.travelclock.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,37 +14,51 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.yatochk.travelclock.AlarmActivity;
 import com.yatochk.travelclock.MainActivity;
 import com.yatochk.travelclock.R;
-
-import org.w3c.dom.Text;
+import com.yatochk.travelclock.fragment.inMapFragments.ConfirmDestination;
+import com.yatochk.travelclock.fragment.inMapFragments.OnWayFragment;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
+    private static MapFragment mapFragment;
+
+    private FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
+
+    private static OnWayFragment onWayFragment;
+    private ConfirmDestination confirmDestination;
+
     private GoogleMap mGoogleMap;
-    private MapView mMapView;
-    private View mView;
+    private View thisLayout;
 
     private TextView distanceTextView;
     private TextView timeTextView;
+    private Button findLocationButton;
+    private Button backButton;
+
+    public static float volumeSound;
+    public static boolean isVibrate = true;
 
     private Context thisContext;
 
@@ -56,14 +71,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private LatLng lastLocation = new LatLng(0, 0);
     public static double distance;
-    public double alarmDistance = 200;
+    public static double alarmDistance = 200;
 
     public static boolean isTracked = true;
+    public static boolean isOnWay;
+    public static boolean readyToGo;
 
     public static MapFragment getInstance() {
-        Bundle args = new Bundle();
-        MapFragment mapFragment = new MapFragment();
-        mapFragment.setArguments(args);
+        if (mapFragment == null) {
+            Bundle args = new Bundle();
+            mapFragment = new MapFragment();
+            mapFragment.setArguments(args);
+        }
 
         return mapFragment;
     }
@@ -72,17 +91,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         thisContext = container.getContext();
-
-        mView = inflater.inflate(R.layout.fragment_map, container, false);
-        return mView;
+        thisLayout = inflater.inflate(R.layout.fragment_map, container, false);
+        return thisLayout;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = (MapView) mView.findViewById(R.id.map);
-        if (mMapView != null){
+        MapView mMapView = thisLayout.findViewById(R.id.map);
+        if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
@@ -93,8 +111,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         iconLocation = BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.arrow));
         iconArrivalMarker = BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.placeholder));
 
-        distanceTextView = mView.findViewById(R.id.distanceTextView);
-        timeTextView = mView.findViewById(R.id.timeTextView);
+        fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        onWayFragment = new OnWayFragment();
+        confirmDestination = new ConfirmDestination();
+        fragmentTransaction.add(R.id.inMapFragment, confirmDestination);
+        fragmentTransaction.commit();
+
+        distanceTextView = OnWayFragment.distanceTextView;
+        timeTextView = OnWayFragment.timeTextView;
     }
 
     private Bitmap getBitmap(int drawableRes) {
@@ -113,24 +138,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
 
-        if (ActivityCompat.checkSelfPermission( thisContext,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( thisContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (ActivityCompat.checkSelfPermission(thisContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(thisContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.thisActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-        fragmentLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000, 1, locationListener);
-        fragmentLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                1000, 1, locationListener);
+        else{
+            fragmentLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    100, 1, locationListener);
 
+            fragmentLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    100, 1, locationListener);
+        }
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onPause() {
+        super.onPause();
+
+        if (!isOnWay) fragmentLocationManager.removeUpdates(locationListener);
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
 
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
+        googleMap.setBuildingsEnabled(false);
         googleMap.setMaxZoomPreference(19);
 
         locationMarker = googleMap.addMarker(new MarkerOptions()
@@ -149,25 +182,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
         googleMap.setOnMapLongClickListener(longClickListener);
         googleMap.setOnMarkerClickListener(markerClickListener);
+
+        findLocationButton = MainActivity.findLocationButton;
+        findLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGoogleMap.getCameraPosition().zoom < 10)
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationMarker.getPosition(), 10));
+                else
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(locationMarker.getPosition()));
+            }
+        });
+
+        backButton = MainActivity.backButton;
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOnWay){
+                    backToConfirm();
+                }
+            }
+        });
     }
 
     private GoogleMap.OnMapLongClickListener longClickListener = new GoogleMap.OnMapLongClickListener() {
         @Override
         public void onMapLongClick(LatLng latLng) {
-            arrivalMarker.remove();
-            arrivalMarker = mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latLng).title("suda?")
-                    .icon(iconArrivalMarker));
-            distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
-            setDistance(distanceTextView, distance);
-            setTime(timeTextView, distance);
+            if (!isOnWay){
+                arrivalMarker.remove();
+                arrivalMarker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(latLng).title("suda?")
+                        .icon(iconArrivalMarker));
+                distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
+                setDistance(distanceTextView, distance);
+                setTime(timeTextView, distance);
+                readyToGo = true;
+            }
+
         }
     };
 
     private GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
-
             return false;
         }
     };
@@ -181,14 +238,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             lastLocation = latLng;
             locationMarker.setPosition(latLng);
 
-            if (arrivalMarker != null) {
-                distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
-                setDistance(distanceTextView, distance);
-                setTime(timeTextView, distance);
-                if (distance <= alarmDistance) alarming();
-            }
-
+            distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
+            setDistance(distanceTextView, distance);
+            setTime(timeTextView, distance);
             if (isTracked) mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            if (distance <= alarmDistance && isOnWay) alarming();
         }
 
         @Override
@@ -210,9 +264,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void markerRotation(Marker locationMarker, LatLng lastLocation, LatLng newLocation) {
         int dLat = (int) Math.round(newLocation.latitude - lastLocation.latitude);
         int dLon = (int) Math.round(newLocation.longitude - lastLocation.longitude);
-        float azimuth = (float) Math.atan2(dLat, dLon);
+        double azimuth = Math.atan2(dLat, dLon);
 
-        locationMarker.setRotation(azimuth);
+        locationMarker.setRotation( (float) Math.toDegrees(azimuth));
     }
 
     private double calculateDistance(LatLng location, LatLng markerLocation) {
@@ -226,32 +280,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return EARTH_RAD * radDistance;
     }
 
-    private void alarming() {
-        Toast toast = Toast.makeText(getContext(), "ALARMING!!!", Toast.LENGTH_LONG);
-        toast.show();
-    }
-
     @SuppressLint("SetTextI18n")
     private void setDistance(TextView textView, double distance){
         String dimension = "";
         int distanceInteger;
 
         if (distance >= 1000){
-            distance /= 1000;
+            distanceInteger = (int) Math.round(distance / 1000);
             dimension = "km";
-            textView.setText(distance + dimension);
+            textView.setText(distanceInteger + dimension);
         }
         else{
             distanceInteger = (int) Math.round(distance);
             dimension = "m";
             textView.setText(distanceInteger + dimension);
         }
-
     }
 
     @SuppressLint("SetTextI18n")
     private void setTime(TextView textView, double distance){
-        int time = (int) (distance / 11);
+        int velocity = 4;
+        int time = (int) (distance / velocity);
         int minutes, hours;
 
         if (time < 60){
@@ -269,5 +318,34 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+    }
+
+    public void onStartWay(){
+        isTracked = true;
+        isOnWay = true;
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+        fragmentTransaction.remove(confirmDestination);
+        fragmentTransaction.commit();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationMarker.getPosition(), 15));
+    }
+
+    public void backToConfirm(){
+        isOnWay = false;
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+        fragmentTransaction.add(R.id.inMapFragment, confirmDestination);
+        fragmentTransaction.commit();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationMarker.getPosition(), 10));
+    }
+
+    private void alarming() {
+        if (MainActivity.appIsPaused)
+            MainActivity.needBackToConfirm = true;
+        else
+            backToConfirm();
+
+        Intent alarmActivity = new Intent(thisContext, AlarmActivity.class);
+        startActivity(alarmActivity);
     }
 }

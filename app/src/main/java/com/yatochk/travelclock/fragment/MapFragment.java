@@ -38,7 +38,6 @@ import com.yatochk.travelclock.R;
 import com.yatochk.travelclock.fragment.inMapFragments.ConfirmDestination;
 import com.yatochk.travelclock.fragment.inMapFragments.OnWayFragment;
 
-
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static MapFragment mapFragment;

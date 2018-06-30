@@ -45,7 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FragmentManager fragmentManager;
     private static FragmentTransaction fragmentTransaction;
 
-    private static OnWayFragment onWayFragment;
+    private OnWayFragment onWayFragment;
     private ConfirmDestination confirmDestination;
 
     private GoogleMap mGoogleMap;
@@ -55,9 +55,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView timeTextView;
     private Button findLocationButton;
     private Button backButton;
-
-    public static float volumeSound;
-    public static boolean isVibrate = true;
 
     private Context thisContext;
 
@@ -70,11 +67,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private LatLng lastLocation = new LatLng(0, 0);
     public static double distance;
-    public static double alarmDistance = 200;
 
-    public static boolean isTracked = true;
     public static boolean isOnWay;
     public static boolean readyToGo;
+
+    @SuppressLint("ValidFragment")
+    private MapFragment() {
+    }
 
     public static MapFragment getInstance() {
         if (mapFragment == null) {
@@ -240,8 +239,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             distance = calculateDistance(lastLocation, arrivalMarker.getPosition());
             setDistance(distanceTextView, distance);
             setTime(timeTextView, distance);
-            if (isTracked) mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            if (distance <= alarmDistance && isOnWay) alarming();
+            if (SettingFragment.getInstance().trackingSwitch.isChecked()) mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            if (distance <= SettingFragment.getInstance().distanceSeekBar.getProgress() && isOnWay) alarming();
         }
 
         @Override
@@ -281,7 +280,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @SuppressLint("SetTextI18n")
     private void setDistance(TextView textView, double distance){
-        String dimension = "";
+        String dimension;
         int distanceInteger;
 
         if (distance >= 1000){
@@ -320,7 +319,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void onStartWay(){
-        isTracked = true;
+        SettingFragment.getInstance().trackingSwitch.setChecked(true);
         isOnWay = true;
         fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);

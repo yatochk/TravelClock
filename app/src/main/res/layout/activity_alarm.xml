@@ -12,10 +12,10 @@
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Davay vstavay"
+        android:text="@string/arrivedTextView"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:textColor="@color/secondaryTextColor" />
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/timeTextView"
@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="180dp"
         android:textSize="80sp"
-        android:text="13:40"
+        android:text=""
         android:textColor="@color/secondaryTextColor"
         android:textAlignment="center"/>
 

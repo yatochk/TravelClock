@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,23 +17,31 @@ import com.yatochk.travelclock.R;
 
 public class SettingFragment extends Fragment {
 
+    private static SettingFragment instance;
+
     private View fragmentView;
 
-    private SeekBar distanceSeekBar;
-    private Switch trackingSwitch;
+    public SeekBar distanceSeekBar;
+    public Switch trackingSwitch;
 
-    private SeekBar volumeSeekBar;
-    private Switch vibrationSwitch;
+    public SeekBar volumeSeekBar;
+    public Switch vibrationSwitch;
 
     private TextView volumeTextView;
     private TextView distanceTextView;
 
-    public static SettingFragment getInstance() {
-        Bundle args = new Bundle();
-        SettingFragment settingFragment = new SettingFragment();
-        settingFragment.setArguments(args);
+    @SuppressLint("ValidFragment")
+    private SettingFragment() {
+    }
 
-        return settingFragment;
+    public static SettingFragment getInstance() {
+        if (instance == null){
+            Bundle args = new Bundle();
+            instance = new SettingFragment();
+            instance.setArguments(args);
+        }
+
+        return instance;
     }
 
     @Override
@@ -72,7 +79,6 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                MapFragment.alarmDistance = seekBar.getProgress();
             }
         });
 
@@ -81,7 +87,6 @@ public class SettingFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 volumeTextView.setText(progress + "%");
-                MapFragment.volumeSound = progress / 100;
             }
 
             @Override
@@ -95,23 +100,5 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        trackingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @SuppressLint("ShowToast")
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MapFragment.isTracked = isChecked;
-            }
-        });
-
-        vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MapFragment.isVibrate = isChecked;
-            }
-        });
-
     }
-
-
-
 }

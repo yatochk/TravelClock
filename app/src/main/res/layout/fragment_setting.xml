@@ -40,9 +40,8 @@
             android:id="@+id/distanceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@id/distanceText"
+            android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/distanceText"
-            android:layout_marginStart="250dp"
             android:text="@string/valuesSeekDistance"
             android:textColor="@color/secondaryTextColor"
             android:textSize="18sp" />
@@ -109,9 +108,8 @@
             android:id="@+id/volumeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@id/valueText"
+            android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/valueText"
-            android:layout_marginStart="250dp"
             android:text="@string/values_alarm_seek"
             android:textColor="@color/secondaryTextColor"
             android:textSize="18sp" />
@@ -124,7 +122,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:max="100"
-            android:progress="50" />
+            android:progress="100" />
 
         <TextView
             android:id="@+id/vibrationText"

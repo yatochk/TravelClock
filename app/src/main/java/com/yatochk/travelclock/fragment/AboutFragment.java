@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.yatochk.travelclock.R;
 
-
 public class AboutFragment extends Fragment {
 
     public static AboutFragment getInstance() {

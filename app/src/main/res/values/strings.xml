@@ -19,8 +19,9 @@
     <string name="alarmSettings">Alarm</string>
     <string name="vibrationSwitch">Vibration mode</string>
     <string name="values_alarm">Alarm volume:</string>
-    <string name="values_alarm_seek">50%</string>
+    <string name="values_alarm_seek">100%</string>
     <string name="confirmButton">GO</string>
     <string name="confirmText">Select a location and press go</string>
+    <string name="arrivedTextView">You arrived</string>
 
 </resources>

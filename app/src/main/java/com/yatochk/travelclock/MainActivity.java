@@ -39,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTabs(){
         ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(2);
         TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.bottomTab);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override

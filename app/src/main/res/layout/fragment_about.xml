@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:background="@android:color/background_light"
+        android:background="@drawable/panel_bg"
         android:orientation="vertical">
 
         <TextView
@@ -22,5 +22,16 @@
             android:textColor="@android:color/background_dark"
             android:textSize="30sp" />
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7097853215442719/8203056757">
+    </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>

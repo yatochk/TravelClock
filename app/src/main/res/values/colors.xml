@@ -4,6 +4,7 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#ff4081</color>
+    <color name="splash">#009688</color>
 
     <color name="accent_material_light">#0e2f47</color>
     <color name="primary_material_light">#84a4bc</color>

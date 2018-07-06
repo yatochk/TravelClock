@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="180dp"
         android:textSize="80sp"
-        android:text=""
+        android:text="13:40"
         android:textColor="@color/secondaryTextColor"
         android:textAlignment="center"/>
 

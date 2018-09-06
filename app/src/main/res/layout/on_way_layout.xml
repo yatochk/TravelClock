@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="145dp"
+    android:layout_alignParentBottom="true"
+    android:padding="16dp"
+    android:layout_marginStart="@dimen/panelMargin"
+    android:layout_marginEnd="@dimen/panelMargin"
+    android:background="@drawable/on_way_bg">
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/indicator"/>
+
+    <View
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_above="@id/progressBar"
+        android:background="@drawable/placeholder" />
+
+    <View
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/progressBar"
+        android:background="@drawable/placeholder" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_above="@id/cancelButton"
+        android:layout_marginBottom="20dp"
+        android:layout_height="10dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/cancel_button_bg"
+        android:text="@string/cancel_button_text"
+        android:textAllCaps="false"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="20sp"
+        android:typeface="sans" />
+
+</RelativeLayout>

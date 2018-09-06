@@ -1,68 +1,76 @@
 package com.yatochk.travelclock;
 
-import android.app.Activity;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 
-import com.yatochk.travelclock.adapter.TabsPagerFragmentAdapter;
-import com.yatochk.travelclock.fragment.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.yatochk.travelclock.views.SearchView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int LAYOUT = R.layout.activity_main;
+    private LocationManager locationManager;
 
-    public static boolean appIsPaused;
-    public static boolean needBackToConfirm;
-
-    public static LocationManager locationManager;
-    public static Button findLocationButton;
-    public static Button backButton;
-
-    public static Activity thisActivity;
+    private Maps map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(LAYOUT);
+        setContentView(R.layout.activity_main);
 
-        thisActivity = this;
-        findLocationButton = findViewById(R.id.findLocationButton);
-        backButton = findViewById(R.id.backButton);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        initTabs();
-    }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        map = new Maps(this);
 
-    private void initTabs(){
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(2);
-        TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = findViewById(R.id.bottomTab);
-        tabLayout.setupWithViewPager(viewPager);
-
+        SearchView searchView = new SearchView(this);
+        searchView.show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        appIsPaused = false;
-        if (needBackToConfirm){
-            MapFragment.getInstance().backToConfirm();
-            needBackToConfirm = false;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    100, 1, locationListener);
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    100, 1, locationListener);
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-        appIsPaused = true;
-    }
+            map.moveMarker(newLocation);
+            map.moveToLocation(newLocation);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 }

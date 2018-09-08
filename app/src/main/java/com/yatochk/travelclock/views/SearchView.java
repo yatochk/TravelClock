@@ -2,24 +2,47 @@ package com.yatochk.travelclock.views;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.yatochk.travelclock.R;
 
-public class SearchView {
+public class SearchView extends OnMapView {
 
-    private FragmentActivity activity;
-    private RelativeLayout mainLayout;
-    private View view;
+    private Animation openAnimation;
+    private Animation closeAnimation;
 
-    public SearchView(FragmentActivity activity) {
-        this.activity = activity;
-        this.mainLayout = activity.findViewById(R.id.mainLayout);
+    public SearchView(FragmentActivity activity, int layout) {
+        super(activity, layout);
 
-        view = activity.getLayoutInflater().inflate(R.layout.search_layout, mainLayout, false);
+        openAnimation = AnimationUtils.loadAnimation(activity, R.anim.open_search);
+        closeAnimation = AnimationUtils.loadAnimation(activity, R.anim.close_search);
     }
 
+    @Override
     public void show() {
-        mainLayout.addView(view);
+        view.setVisibility(View.VISIBLE);
+        view.startAnimation(openAnimation);
+    }
+
+    @Override
+    public void hide() {
+        closeAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(closeAnimation);
     }
 }

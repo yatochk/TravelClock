@@ -2,24 +2,28 @@ package com.yatochk.travelclock.views;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.RelativeLayout;
 
-import com.yatochk.travelclock.R;
+public class OnWayView extends OnMapView {
 
-public class OnWayView {
-
-    private FragmentActivity activity;
-    private RelativeLayout mainLayout;
-    private View view;
-
-    public OnWayView(FragmentActivity activity) {
-        this.activity = activity;
-        this.mainLayout = activity.findViewById(R.id.mainLayout);
-
-        view = activity.getLayoutInflater().inflate(R.layout.on_way_layout, mainLayout, false);
+    public OnWayView(FragmentActivity activity, int layout) {
+        super(activity, layout);
     }
 
-    public void show(){
-        mainLayout.addView(view);
+    public void showUp() {
+
+    }
+
+    public void showDown() {
+
+    }
+
+    @Override
+    public void show() {
+        view.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hide() {
+        view.setVisibility(View.INVISIBLE);
     }
 }

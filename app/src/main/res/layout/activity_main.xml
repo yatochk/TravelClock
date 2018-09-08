@@ -23,4 +23,22 @@
         android:layout_margin="26dp"
         android:background="@drawable/settings_icon" />
 
+    <include
+        android:id="@+id/search"
+        layout="@layout/search"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <include
+        android:id="@+id/settings"
+        layout="@layout/settings"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <include
+        android:id="@+id/on_way"
+        layout="@layout/on_way" />
+
 </RelativeLayout>

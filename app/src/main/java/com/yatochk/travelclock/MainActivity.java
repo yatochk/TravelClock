@@ -11,12 +11,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.yatochk.travelclock.views.SearchView;
+import com.yatochk.travelclock.views.controller.ViewsController;
 
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
-
+    private ViewsController viewsController;
     private Maps map;
 
     @Override
@@ -26,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         map = new Maps(this);
-
-        SearchView searchView = new SearchView(this);
-        searchView.show();
+        viewsController = new ViewsController(this);
     }
 
     @Override
@@ -73,4 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        if (!viewsController.onBackPressed())
+            super.onBackPressed();
+    }
 }

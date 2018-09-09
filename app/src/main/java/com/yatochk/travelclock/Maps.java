@@ -22,10 +22,13 @@ public class Maps implements OnMapReadyCallback {
     private GoogleMap map;
     private Marker locationMarker;
     private Marker arrivalMarker;
+    private GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener;
+    private GoogleMap.OnCameraIdleListener onCameraIdleListener;
 
-    Maps(FragmentActivity activity) {
+    Maps(FragmentActivity activity, GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener, GoogleMap.OnCameraIdleListener onCameraIdleListener) {
         this.activity = activity;
-
+        this.onCameraMoveStartedListener = onCameraMoveStartedListener;
+        this.onCameraIdleListener = onCameraIdleListener;
         mapInit();
     }
 
@@ -48,6 +51,8 @@ public class Maps implements OnMapReadyCallback {
                 .position(new LatLng(0, 0)));
 
         googleMap.setOnMapClickListener(onMapClickListener);
+        googleMap.setOnCameraMoveStartedListener(onCameraMoveStartedListener);
+        googleMap.setOnCameraIdleListener(onCameraIdleListener);
         googleMap.setOnMarkerClickListener(onMarkerClickListener);
     }
 

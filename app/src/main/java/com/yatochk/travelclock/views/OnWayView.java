@@ -10,7 +10,7 @@ public class OnWayView extends OnMapView {
     }
 
     public void showUp() {
-
+        
     }
 
     public void showDown() {

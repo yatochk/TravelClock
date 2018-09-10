@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -54,12 +55,10 @@ public class Maps implements OnMapReadyCallback {
         googleMap.setOnCameraMoveStartedListener(onCameraMoveStartedListener);
         googleMap.setOnCameraIdleListener(onCameraIdleListener);
         googleMap.setOnMarkerClickListener(onMarkerClickListener);
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style));
     }
 
-    private OnMarkerClickListener onMarkerClickListener = (Marker marker) -> {
-        if (marker == locationMarker) moveToLocation(locationMarker.getPosition());
-        return false;
-    };
+    private OnMarkerClickListener onMarkerClickListener = (Marker marker) -> false;
 
     private OnMapClickListener onMapClickListener = (LatLng latLng) -> arrivalMarker.setPosition(latLng);
 
@@ -76,7 +75,8 @@ public class Maps implements OnMapReadyCallback {
     }
 
     public void moveToLocation(LatLng location) {
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(location,
+                (map.getCameraPosition().zoom < 10) ? 10 : map.getCameraPosition().zoom));
     }
 
     public void moveMarker(LatLng newLocation) {

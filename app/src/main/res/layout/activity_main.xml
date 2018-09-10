@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:alpha="0.4"
         android:background="#fff"
-        android:contentDescription="bg" />
+        android:contentDescription="@string/bg" />
 
     <include
         android:id="@+id/search"
@@ -36,13 +36,14 @@
         android:id="@+id/on_way"
         layout="@layout/on_way" />
 
-    <Button
+    <ImageButton
         android:id="@+id/settings_button"
         android:layout_width="40dp"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="26dp"
-        android:background="@drawable/settings_icon" />
+        android:background="@drawable/settings_icon"
+        android:contentDescription="@string/settingsCaption" />
 
 </RelativeLayout>

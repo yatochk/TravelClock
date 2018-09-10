@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class ViewsController {
 
-    private OnMapView[] views;
-    private ArrayList<OnMapView> openViews = new ArrayList<>();
-
     public final int SEARCH_VIEW = 0;
     public final int ON_WAY_VIEW = 1;
     public final int SETTINGS_VIEW = 2;
+
+    private OnMapView[] views;
+    private ArrayList<OnMapView> openViews = new ArrayList<>();
 
     public ViewsController(FragmentActivity activity) {
         views = new OnMapView[]{

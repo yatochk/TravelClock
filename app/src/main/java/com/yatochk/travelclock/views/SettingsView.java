@@ -11,14 +11,14 @@ import com.yatochk.travelclock.Settings;
 
 public class SettingsView extends OnMapView {
 
-    private View settingsBtn;
+    private View settingsButton;
     private Animator openAnimator;
     private Animator closeAnimator;
 
     public SettingsView(FragmentActivity activity, int layout) {
         super(activity, layout);
 
-        settingsBtn = activity.findViewById(R.id.settings_button);
+        settingsButton = activity.findViewById(R.id.settings_button);
         SeekBar volumeSeekBar = activity.findViewById(R.id.volume_seek_bar);
         SeekBar distanceSeekBar = activity.findViewById(R.id.distance_seek_bar);
 
@@ -36,7 +36,7 @@ public class SettingsView extends OnMapView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                view.setVisibility(View.INVISIBLE);
+                getView().setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -86,14 +86,14 @@ public class SettingsView extends OnMapView {
 
     @Override
     public void show() {
-        view.setVisibility(View.VISIBLE);
+        getView().setVisibility(View.VISIBLE);
         openAnimator.start();
-        settingsBtn.setVisibility(View.INVISIBLE);
+        settingsButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void hide() {
         closeAnimator.start();
-        settingsBtn.setVisibility(View.VISIBLE);
+        settingsButton.setVisibility(View.VISIBLE);
     }
 }

@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
     private ViewsController viewsController;
-    private Maps map;
+    private Map map;
     private boolean isTracking;
+    private boolean isFoundLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,20 +31,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        map = new Maps(this, onCameraMoveStartedListener, onCameraIdleListener);
+        map = new Map(this, onMapClickListener, onCameraMoveStartedListener, onCameraIdleListener);
         viewsController = new ViewsController(this);
         isTracking = true;
     }
 
+    private GoogleMap.OnMapClickListener onMapClickListener = (latLng) -> {
+        if (viewsController.getViews()[ViewsController.ON_WAY_VIEW].getView().getVisibility() != View.VISIBLE) {
+            map.moveDestinationMerker(latLng);
+            viewsController.onPickDestination();
+        }
+
+    };
+
     private GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener = (reason) -> {
         if (reason == REASON_GESTURE) {
             isTracking = false;
-            viewsController.hideView(viewsController.SEARCH_VIEW);
+            viewsController.hideViewOnMapMove();
         }
     };
 
     private GoogleMap.OnCameraIdleListener onCameraIdleListener = () ->
-            viewsController.showView(viewsController.SEARCH_VIEW);
+            viewsController.showViewAfterMapMove();
 
     @Override
     protected void onResume() {
@@ -67,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-            map.moveMarker(newLocation);
+            map.moveLocationMarker(newLocation);
             if (isTracking) map.moveToLocation(newLocation);
+            if (!isFoundLocation) {
+                isFoundLocation = true;
+                //view
+            }
         }
 
         @Override
@@ -83,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onProviderDisabled(String provider) {
-
+            isFoundLocation = false;
         }
     };
 
@@ -93,3 +107,4 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 }
+

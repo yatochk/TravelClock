@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Maps implements OnMapReadyCallback {
+public class Map implements OnMapReadyCallback {
 
     private FragmentActivity activity;
     private GoogleMap map;
@@ -25,11 +25,13 @@ public class Maps implements OnMapReadyCallback {
     private Marker arrivalMarker;
     private GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
+    private OnMapClickListener onMapClickListener;
 
-    Maps(FragmentActivity activity, GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener, GoogleMap.OnCameraIdleListener onCameraIdleListener) {
+    Map(FragmentActivity activity, OnMapClickListener onMapClickListener,GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener, GoogleMap.OnCameraIdleListener onCameraIdleListener) {
         this.activity = activity;
         this.onCameraMoveStartedListener = onCameraMoveStartedListener;
         this.onCameraIdleListener = onCameraIdleListener;
+        this.onMapClickListener = onMapClickListener;
         mapInit();
     }
 
@@ -60,8 +62,6 @@ public class Maps implements OnMapReadyCallback {
 
     private OnMarkerClickListener onMarkerClickListener = (Marker marker) -> false;
 
-    private OnMapClickListener onMapClickListener = (LatLng latLng) -> arrivalMarker.setPosition(latLng);
-
     private Bitmap getBitmap(int drawableRes) {
         Drawable drawable = activity.getResources().getDrawable(drawableRes);
         Canvas canvas = new Canvas();
@@ -79,7 +79,11 @@ public class Maps implements OnMapReadyCallback {
                 (map.getCameraPosition().zoom < 10) ? 10 : map.getCameraPosition().zoom));
     }
 
-    public void moveMarker(LatLng newLocation) {
+    public void moveLocationMarker(LatLng newLocation) {
         locationMarker.setPosition(newLocation);
+    }
+
+    public void moveDestinationMerker(LatLng position){
+        arrivalMarker.setPosition(position);
     }
 }

@@ -21,8 +21,8 @@ public class SearchView extends OnMapView {
 
     @Override
     public void show() {
-        view.setVisibility(View.VISIBLE);
-        view.startAnimation(openAnimation);
+        getView().setVisibility(View.VISIBLE);
+        getView().startAnimation(openAnimation);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SearchView extends OnMapView {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
+                getView().setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -43,6 +43,6 @@ public class SearchView extends OnMapView {
 
             }
         });
-        view.startAnimation(closeAnimation);
+        getView().startAnimation(closeAnimation);
     }
 }

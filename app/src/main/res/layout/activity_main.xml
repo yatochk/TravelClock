@@ -25,16 +25,31 @@
         android:id="@+id/search"
         layout="@layout/search" />
 
+    <Button
+        android:id="@+id/go"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:text="@string/choice_go"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/panelMargin"
+        android:layout_marginStart="@dimen/panelMargin"
+        android:background="@drawable/panel_bg"/>
+
+    <include
+        android:id="@+id/on_way"
+        layout="@layout/on_way"
+        android:visibility="invisible" />
+
     <include
         android:id="@+id/settings"
         layout="@layout/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
-    <include
-        android:id="@+id/on_way"
-        layout="@layout/on_way" />
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/settings_button"

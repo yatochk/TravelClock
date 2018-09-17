@@ -4,5 +4,8 @@
     <string name="above_search_text">Where are we going?</string>
     <string name="cancel_button_text">Cancel</string>
     <string name="bg">bg</string>
+    <string name="choice_search">Searching you</string>
+    <string name="choice_arrival">Change arrival</string>
+    <string name="choice_go">Go</string>
 
 </resources>

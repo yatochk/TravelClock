@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1061039615085",
+    "firebase_url": "https://travel-clock-7877a.firebaseio.com",
+    "project_id": "travel-clock-7877a",
+    "storage_bucket": "travel-clock-7877a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061039615085:android:1814657b7e8a6378",
+        "android_client_info": {
+          "package_name": "com.yatochk.travelclock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061039615085-i0g09tnc48s822u1cirgtq1vk4pjdipu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2oAbmt-Ryp1rHTIarO6QVzYsRsbLHSNk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

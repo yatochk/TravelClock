@@ -1,3 +1,12 @@
 package com.yatochk.travelclock.views
 
-class SettingsView
+class SettingsView : OnMapView {
+    override fun showView() {
+
+    }
+
+    override fun hideView() {
+
+    }
+
+}

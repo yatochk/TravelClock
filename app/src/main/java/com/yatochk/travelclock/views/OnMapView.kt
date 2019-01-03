@@ -1,6 +1,13 @@
 package com.yatochk.travelclock.views
 
-interface OnMapView {
-    fun showView()
-    fun hideView()
+abstract class OnMapView {
+    var isHide: Boolean = true
+
+    open fun showView() {
+        isHide = true
+    }
+
+    open fun hideView() {
+        isHide = false
+    }
 }
